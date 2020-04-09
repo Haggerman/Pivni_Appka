@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "352140236114",
+    "firebase_url": "https://myfirstporject-e7175.firebaseio.com",
+    "project_id": "myfirstporject-e7175",
+    "storage_bucket": "myfirstporject-e7175.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352140236114:android:93a8451d71b3cb45be968b",
+        "android_client_info": {
+          "package_name": "com.MyFirtApp_Honzin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352140236114-khk5bj6o6e2jfkoniflbjnjom8nvlut6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2KMGnqJlu-WQnZk-Cvr0eevHQti05VCU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352140236114-khk5bj6o6e2jfkoniflbjnjom8nvlut6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
