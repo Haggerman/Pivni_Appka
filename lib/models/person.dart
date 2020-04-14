@@ -1,5 +1,6 @@
 import 'package:MyFirtApp_Honzin/models/place.dart';
 import 'package:MyFirtApp_Honzin/services/database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlong/latlong.dart';
 
 class Person {
@@ -12,8 +13,9 @@ class Person {
   final double longitude;
   final String uid;
   final List<Place> userPlaces;
+  final Timestamp update;
 
-  Person({this.name, this.place, this.thirst, this.picUrl, this.latitude, this.longitude, this.uid, this.userPlaces}){
+  Person({this.name, this.place, this.thirst, this.picUrl, this.latitude, this.longitude, this.uid, this.userPlaces, this.update}){
    Place myPlace = placeByName(place);
    if(myPlace == null){
      this.place = 'Nikde';

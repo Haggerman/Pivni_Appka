@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 
 class Maps extends StatefulWidget {
   final Person person;
@@ -197,9 +198,22 @@ class _MapsState extends State<Maps> {
               children: <TextSpan>[
                 new TextSpan(text: person.name , style: new TextStyle(fontWeight: FontWeight.bold,shadows: textShadow)),
                 new TextSpan(text: ' je tady ',style:  new TextStyle( shadows: textShadow)),
+                new TextSpan(text: DateFormat('kk:mm - MM/dd').format(person.update.toDate()),style:  new TextStyle( shadows: textShadow, fontSize: 14)),
               ],
             ),
-          ): new Text('Seš tady', style: new TextStyle(color: Colors.white, shadows: textShadow),),
+          ):new RichText(
+            text: new TextSpan(
+              style: new TextStyle(
+                fontSize: 22.0,
+                color: Colors.white,
+              ),
+              children: <TextSpan>[
+
+                new TextSpan(text: 'Seš tady ', style: new TextStyle(color: Colors.white, shadows: textShadow)),
+                new TextSpan(text: DateFormat('kk:mm - MM/dd').format(person.update.toDate()),style:  new TextStyle( shadows: textShadow, fontSize: 14)),
+              ],
+            ),
+          ),
           backgroundColor: Colors.amber[400],
 
         ),

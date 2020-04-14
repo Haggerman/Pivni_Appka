@@ -28,7 +28,8 @@ class DataBaseService {
         {'name':'Irská','latitude': 50.560560 ,'longitude':15.911476},
         {'name':'Pivovarka','latitude': 50.561376 ,'longitude':15.910469},
         {'name':'Pasáž','latitude': 50.562592 ,'longitude':15.911371},
-        {'name':'Nikde','latitude': 50.111 ,'longitude':15.111}]
+        {'name':'Nikde','latitude': 50.111 ,'longitude':15.111}],
+      'update': DateTime.now()
     });
   }
 
@@ -53,7 +54,8 @@ class DataBaseService {
   Future updateLocation(double latitude,double longitude) async{
     return await peopleCollection.document(uid).updateData({
       'latitude':latitude,
-      'longitude': longitude
+      'longitude': longitude,
+      'update': Timestamp.now()
     });
   }
 
@@ -77,9 +79,10 @@ class DataBaseService {
         picUrl: doc.data['picUrl'] ?? '0',
         latitude: doc.data['latitude'] ?? 0,
         longitude: doc.data['longitude'] ?? 0,
+        update: doc.data['update'] ?? null,
         userPlaces: doc.data['users_places'].map<Place>((item) {
           return Place.fromMap(item);
-        }).toList() ?? 0,
+        }).toList() ?? null,
       );
     }).toList();
   }
@@ -107,7 +110,8 @@ class DataBaseService {
         return Place.fromMap(item);
       }).toList(),
       longitude: snapshot.data['longitude'],
-      latitude: snapshot.data['latitude']
+      latitude: snapshot.data['latitude'],
+      update: snapshot.data['update']
     );
   }
 

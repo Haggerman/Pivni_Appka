@@ -1,4 +1,5 @@
 import 'package:MyFirtApp_Honzin/models/place.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
 
@@ -16,8 +17,9 @@ class UserData {
   final double latitude;
   final double longitude;
   final List<Place> userPlaces;
+  final Timestamp update;
 
-  UserData({this.place,this.uid,this.thirst,this.name, this.picUrl, this.userPlaces, this.latitude, this.longitude});
+  UserData({this.place,this.uid,this.thirst,this.name, this.picUrl, this.userPlaces, this.latitude, this.longitude, this.update});
 
   List<String> getPlaces(){
     List<String> allPlaces = new List<String>();

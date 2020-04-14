@@ -54,8 +54,8 @@ class PersonTile extends StatelessWidget {
               backgroundImage: (person.picUrl != '0')?NetworkImage("https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/${person.picUrl}?alt=media"):
               NetworkImage('https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/wojak.png?alt=media'),
             ),
-            title: Text(person.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,  shadows:  textShadow),),
-            subtitle: Text(' ${person.place} ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,shadows: textShadow )),
+            title: Text(person.name, style: TextStyle(color: Colors.white,fontSize: 22, fontWeight: FontWeight.bold,  shadows:  textShadow),),
+            subtitle: Text(' ${person.place} ', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold,shadows: textShadow )),
             trailing: person.place != 'Nikde'? person.naMiste()?
 
                   Icon(Icons.check_circle_outline, color: Colors.green):

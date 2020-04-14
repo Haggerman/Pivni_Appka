@@ -57,7 +57,7 @@ class PlaceTile extends StatelessWidget {
           ),
           margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
           child:ListTile(
-            title: Text(place.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,  shadows:  textShadow),),
+            title: Text(place.name, style: TextStyle(color: Colors.white,fontSize: 22, fontWeight: FontWeight.bold,  shadows:  textShadow),),
                 trailing:  IconButton(icon: Icon(Icons.delete_forever), onPressed: () {
                   _onDelete(context, userId);
                 }),
