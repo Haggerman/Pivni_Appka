@@ -48,8 +48,8 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Nick'),
-                  validator: (val) => val.length < 4 ? 'Enter a nick 4+ chars long' : null,
+                  decoration: textInputDecoration.copyWith(hintText: 'Name'),
+                  validator: (val) => val.length < 4 ? 'Enter a name 4+ chars long' : null,
                   onChanged: (val){
                     setState(() => nick = val);
                   },

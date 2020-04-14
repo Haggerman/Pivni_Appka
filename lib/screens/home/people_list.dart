@@ -21,7 +21,6 @@ class _PeopleListState extends State<PeopleList> {
         people[i]=person;
       }
     }
-
     return ListView.builder(
         itemCount: people.length,
         itemBuilder: (context, index){

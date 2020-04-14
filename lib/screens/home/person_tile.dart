@@ -3,8 +3,6 @@ import 'package:MyFirtApp_Honzin/screens/map/map.dart';
 import 'package:MyFirtApp_Honzin/shared/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:MyFirtApp_Honzin/models/person.dart';
-import 'dart:math';
-
 import 'package:provider/provider.dart';
 
 class PersonTile extends StatelessWidget {
@@ -58,6 +56,11 @@ class PersonTile extends StatelessWidget {
             ),
             title: Text(person.name, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,  shadows:  textShadow),),
             subtitle: Text(' ${person.place} ', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,shadows: textShadow )),
+            trailing: person.place != 'Nikde'? person.naMiste()?
+
+                  Icon(Icons.check_circle_outline, color: Colors.green):
+                  Icon(Icons.do_not_disturb_alt, color: Colors.red)
+            :null
           ),
         ),
       ),

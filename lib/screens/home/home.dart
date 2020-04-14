@@ -1,5 +1,5 @@
-import 'dart:io';
 import 'package:MyFirtApp_Honzin/models/person.dart';
+import 'package:MyFirtApp_Honzin/screens/map/all_places.dart';
 import 'package:MyFirtApp_Honzin/screens/profile/profile.dart';
 import 'package:MyFirtApp_Honzin/services/auth.dart';
 import 'package:MyFirtApp_Honzin/shared/constants.dart';
@@ -9,20 +9,18 @@ import 'package:MyFirtApp_Honzin/services/database.dart';
 import 'package:provider/provider.dart';
 import 'package:MyFirtApp_Honzin/screens/home/people_list.dart';
 import 'package:MyFirtApp_Honzin/screens/home/settings_form.dart';
-import 'package:shake/shake.dart';
+
 
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
-  ShakeDetector detector;
-  Future<void> future;
 
   void _closeModal(void value) {
     }
     void _showSettingsPanel() {
-      if (future == null) {
+
         Future<void> future = showModalBottomSheet<void>(
             context: context, builder: (context) {
           return Container(
@@ -31,13 +29,7 @@ class Home extends StatelessWidget {
           );
         });
         future.then((void value) => _closeModal(value));
-      }
     }
-  detector = ShakeDetector.autoStart(onPhoneShake:(){
-    detector.stopListening();
-   _showSettingsPanel();
-  } );
-
 
     return StreamProvider<List<Person>>.value(
       value: DataBaseService().people,
@@ -59,6 +51,15 @@ class Home extends StatelessWidget {
           backgroundColor: Colors.amber[400],
           elevation: 0.0,
           actions: <Widget>[
+            FlatButton(
+              child: Icon(Icons.map, color: Colors.white),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AllPlaces()),
+                );
+              },
+            ),
             FlatButton(
         child: Icon(Icons.portrait, color: Colors.white),
         onPressed: () {

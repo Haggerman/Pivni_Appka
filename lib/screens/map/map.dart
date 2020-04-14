@@ -1,7 +1,9 @@
 import 'package:MyFirtApp_Honzin/models/person.dart';
+import 'package:MyFirtApp_Honzin/models/place.dart';
 import 'package:MyFirtApp_Honzin/services/database.dart';
 import 'package:MyFirtApp_Honzin/shared/constants.dart';
 import 'package:MyFirtApp_Honzin/shared/loading.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -17,25 +19,29 @@ class Maps extends StatefulWidget {
 
 class _MapsState extends State<Maps> {
   GoogleMapController mapController;
+  final _formKey = GlobalKey<FormState>();
   LatLng position;
   Person person;
   String userUid;
-  final Map<String, Marker> _markers = {};
+  Map<String, Marker> _markers = {};
+  ArgumentCallback<LatLng> onTap;
   String text;
+  bool newMarker = false;
   bool loading = true;
+  String error = '';
 
   void initState() {
     person = widget.person;
     userUid= widget.userUid;
-    position = LatLng(person.latitude, person.longitude);
+    position = LatLng(person.latitude.toDouble(), person.longitude.toDouble());
     super.initState();
     if(person.uid == userUid) {
       Geolocator().getCurrentPosition().then((currentLoc) {
         setState(() {
           loading = false;
           text = 'Tady se nacházíš';
-          position = LatLng(currentLoc.latitude, currentLoc.longitude);
-          markerSet();
+          position = LatLng(currentLoc.latitude.toDouble(), currentLoc.longitude.toDouble());
+          _markerSet();
         });
       });
     }
@@ -43,28 +49,63 @@ class _MapsState extends State<Maps> {
       setState(() {
         loading = false;
         text = 'Tady se nachází ${person.name}';
-        markerSet();
+        _markerSet();
       });
     }
   }
 
-  void markerSet(){
+  _markerSet(){
     _markers.clear();
-    final marker = Marker(
+    _markers["Current Location"] = Marker(
       markerId: MarkerId("curr_loc"),
       position: position,
       infoWindow: InfoWindow(title: text),
+      icon:
+      BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
     );
-    _markers["Current Location"] = marker;
+    if(person.place != 'Nikde'){
+      print(person.naMiste());
+
+      _markers["Destination"] = Marker(
+        markerId: MarkerId("destination"),
+        position: LatLng(person.getPlaceDetails().latitude.toDouble(), person.getPlaceDetails().longitude.toDouble()),
+        infoWindow: InfoWindow(title: person.place),
+        icon:
+        BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+      );
+    }
   }
 
-  void onMapCreated(controller){
+  _handleTap(LatLng point) {
+      if(newMarker == false) {
+        newMarker = true;
+        setState(() {
+          _markers['New'] = Marker(
+            markerId: MarkerId(point.toString()),
+            position: point,
+            infoWindow: InfoWindow(
+              title: 'Nová poloha',
+            ),
+            icon:
+            BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          );
+        });
+      }
+      else if(newMarker == true){
+        newMarker = false;
+        setState(() {
+          _markers.remove('New');
+        });
+      }
+  }
+
+   onMapCreated(controller){
     setState(() {
       mapController = controller;
     });
 }
 
-  showAlertDialog(BuildContext context) {
+  _showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       title: Text("Poloha úspěšně nasdílena"),
     );
@@ -75,6 +116,60 @@ class _MapsState extends State<Maps> {
         return alert;
       },
     );
+  }
+  Future<void>_saveDialog(BuildContext context, String uid){
+    return showDialog(context: context, builder: (context){
+       String _currentName;
+      return AlertDialog(
+       backgroundColor: Colors.amber[200],
+        content: Container(
+          height: 160,
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: textInputDecoration.copyWith(hintText: 'Jméno místa'),
+                  validator: (val) => val.length < 4 ? 'Jméno musí být delší než 4 znaky' : null,
+                  onChanged: (val) => setState(() => _currentName = val),
+                ),
+
+                SizedBox(height: 20.0),
+                RaisedButton(
+                  color: Colors.pink[400],
+                  child: Text(
+                    'Uložit',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onPressed: () async {
+                    DataBaseService database = DataBaseService(uid: uid);
+                    if(_formKey.currentState.validate()) {
+                     Place checkPlace = person.placeByName(_currentName);
+                     if(checkPlace != null){
+                     await database.deleteLocation(checkPlace.name, checkPlace.latitude, checkPlace.longitude);
+                     }
+
+                      await database.addNewLocation(
+                        _currentName,
+                        _markers['New'].position.latitude.toDouble(),
+                        _markers['New'].position.longitude.toDouble()
+                      );
+                      Navigator.pop(context);
+                    }
+                  },
+                ),
+                SizedBox(height: 12.0),
+                Text(
+                    error,
+                    style: TextStyle(color: Colors.red, fontSize: 14.0)
+                )
+              ],
+            ),
+          ),
+        ),
+      );
+    });
+
   }
 
   @override
@@ -118,21 +213,45 @@ class _MapsState extends State<Maps> {
                       target: position,
                       zoom: 10,
                     ),
+                    onTap: person.uid == userUid?  _handleTap: null,
                 ),
+                Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child:  person.uid == userUid? Align(
+                    alignment: Alignment.bottomRight,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        newMarker? FloatingActionButton(
+                          heroTag: 'btn2',
+                          onPressed: () {_saveDialog(context, person.uid);},
+                          tooltip: 'Status change',
+                          child: const Icon(Icons.save ),
+                          backgroundColor: Colors.amber[400],
+                        ):Container(),
+                        SizedBox(height: 16.0),
+                         FloatingActionButton(
+                           heroTag: 'btn1',
+                          onPressed: () async {
+                            await DataBaseService(uid: person.uid).updateLocation(
+                              position.latitude ?? 50.5654,
+                              position.longitude ?? 15.9091,
+                            );
+                            _showAlertDialog(context);
+                          },
+                          tooltip: 'Status change',
+                          child: const Icon(Icons.send ),
+                          backgroundColor: Colors.amber[400],
+                        ),
+                      ],
+                    )
+                  ): null,
+                ),
+
               ],
             ),
-       floatingActionButton: person.uid == userUid? FloatingActionButton(
-         onPressed: () async {
-           await DataBaseService(uid: person.uid).updateLocation(
-             position.latitude ?? 50.5654,
-             position.longitude ?? 15.9091,
-           );
-           showAlertDialog(context);
-         },
-         tooltip: 'Status change',
-         child: const Icon(Icons.send ),
-         backgroundColor: Colors.amber[400],
-       ): null,
         );
   }
+
 }

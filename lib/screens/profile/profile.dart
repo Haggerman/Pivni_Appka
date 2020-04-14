@@ -118,7 +118,6 @@ class _ProfileState extends State<Profile> {
                   child: Form(
                     key: _formKey,
                     child: Column(
-
                       children: <Widget>[
                         Container(
                           decoration: BoxDecoration(
@@ -147,8 +146,8 @@ class _ProfileState extends State<Profile> {
                         SizedBox(height: 20.0),
                         TextFormField(
                           initialValue: userData.name,
-                          decoration: textInputDecoration,
-                          validator: (val) => val.isEmpty ? 'Enter a name' : null,
+                          decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
+                          validator: (val) => val.length < 4 ? 'Jméno musí být delší než 4 znaky' : null,
                           onChanged: (val) => setState(() => _currentName = val),
                         ),
 
@@ -164,10 +163,11 @@ class _ProfileState extends State<Profile> {
                             setState(() {
                               loading = true;
                             });
-                            if(_formKey.currentState.validate()){}
-                            await database.updateUserName(
+                            if(_formKey.currentState.validate()) {
+                              await database.updateUserName(
                                 _currentName ?? userData.name,
-                            );
+                              );
+                            }
                             if(imageFile != null){
                               String stamp = new DateTime.now().millisecondsSinceEpoch.toString();
                               if(userData.picUrl != '0'){
