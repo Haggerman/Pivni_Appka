@@ -25,7 +25,7 @@ class _SignInState extends State<SignIn> {
       appBar: AppBar(
         backgroundColor: Colors.amber[400],
         elevation: 0.0,
-        title: Text('Login to Pivní app'),
+        title: Text('Login do Pivní appky'),
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () {widget.toggleView();},
@@ -43,7 +43,7 @@ class _SignInState extends State<SignIn> {
               SizedBox(height: 20.0),
               TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                validator: (val) => val.isEmpty ? 'Zadej email' : null,
                 onChanged: (val){
                   setState(() => email = val);
                 }
@@ -51,8 +51,8 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height: 20.0),
               TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: 'Password'),
-                validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                decoration: textInputDecoration.copyWith(hintText: 'Heslo'),
+                validator: (val) => val.length < 6 ? 'Heslo musí být alespoň 6 znaků dlouhé' : null,
                 obscureText: true,
                 onChanged: (val){
                   setState(() => password = val);
@@ -72,7 +72,7 @@ class _SignInState extends State<SignIn> {
 
                   if(result == null){
                    setState((){
-                     error = 'Could not sign in with those credentials';
+                     error = 'Uživatel s tímto emailem již existuje';
                       loading = false;
                     });
                    }

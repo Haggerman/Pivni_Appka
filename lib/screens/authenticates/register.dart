@@ -48,8 +48,8 @@ class _RegisterState extends State<Register> {
               children: <Widget>[
                 SizedBox(height: 20.0),
                 TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Name'),
-                  validator: (val) => val.length < 4 ? 'Enter a name 4+ chars long' : null,
+                  decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
+                  validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
                   onChanged: (val){
                     setState(() => nick = val);
                   },
@@ -57,16 +57,16 @@ class _RegisterState extends State<Register> {
                 SizedBox(height: 20.0),
                 TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                  validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                  validator: (val) => val.isEmpty ? 'Zadej email' : null,
                   onChanged: (val){
                     setState(() => email = val);
                   },
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Password'),
+                  decoration: textInputDecoration.copyWith(hintText: 'Heslo'),
                   obscureText: true,
-                  validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
+                  validator: (val) => val.length < 6 ? 'Jméno musí být alespoň 6 znaků dlouhé' : null,
                   onChanged: (val){
                     setState(() => password = val);
                   },
@@ -75,7 +75,7 @@ class _RegisterState extends State<Register> {
                 RaisedButton(
                   color: Colors.pink[400],
                   child: Text(
-                      'Register',
+                      'Registrovat',
                       style: TextStyle(color: Colors.white)
                   ),
                   onPressed: () async{
@@ -84,7 +84,7 @@ class _RegisterState extends State<Register> {
                     dynamic result = await _auth.registerWithEmailAndPasword(email, password, nick);
                     if(result == null){
                       setState((){
-                        error = 'Could not register with those credentials';
+                        error = 'Uživatel se zadanými údaji neexistuje';
                         loading = false;
                       });
                     }

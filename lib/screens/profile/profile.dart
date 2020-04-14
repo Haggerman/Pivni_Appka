@@ -147,7 +147,7 @@ class _ProfileState extends State<Profile> {
                         TextFormField(
                           initialValue: userData.name,
                           decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
-                          validator: (val) => val.length < 4 ? 'Jméno musí být delší než 4 znaky' : null,
+                          validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
                           onChanged: (val) => setState(() => _currentName = val),
                         ),
 
