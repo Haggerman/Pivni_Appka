@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> {
                 TextFormField(
                   decoration: textInputDecoration.copyWith(hintText: 'Heslo'),
                   obscureText: true,
-                  validator: (val) => val.length < 6 ? 'Jméno musí být alespoň 6 znaků dlouhé' : null,
+                  validator: (val) => val.length < 6 ? 'Heslo musí být alespoň 6 znaků dlouhé' : null,
                   onChanged: (val){
                     setState(() => password = val);
                   },

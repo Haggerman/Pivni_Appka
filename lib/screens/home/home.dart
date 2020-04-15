@@ -10,7 +10,6 @@ import 'package:provider/provider.dart';
 import 'package:MyFirtApp_Honzin/screens/home/people_list.dart';
 import 'package:MyFirtApp_Honzin/screens/home/settings_form.dart';
 
-
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
 

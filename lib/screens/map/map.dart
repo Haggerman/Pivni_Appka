@@ -60,7 +60,7 @@ class _MapsState extends State<Maps> {
     _markers["Current Location"] = Marker(
       markerId: MarkerId("curr_loc"),
       position: position,
-      infoWindow: InfoWindow(title: text),
+      infoWindow: InfoWindow(title: DateFormat('kk:mm - MM/dd').format(person.update.toDate())),
       icon:
       BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
     );
@@ -198,7 +198,7 @@ class _MapsState extends State<Maps> {
               children: <TextSpan>[
                 new TextSpan(text: person.name , style: new TextStyle(fontWeight: FontWeight.bold,shadows: textShadow)),
                 new TextSpan(text: ' je tady ',style:  new TextStyle( shadows: textShadow)),
-                new TextSpan(text: DateFormat('kk:mm - MM/dd').format(person.update.toDate()),style:  new TextStyle( shadows: textShadow, fontSize: 14)),
+
               ],
             ),
           ):new RichText(
@@ -209,8 +209,8 @@ class _MapsState extends State<Maps> {
               ),
               children: <TextSpan>[
 
-                new TextSpan(text: 'Seš tady ', style: new TextStyle(color: Colors.white, shadows: textShadow)),
-                new TextSpan(text: DateFormat('kk:mm - MM/dd').format(person.update.toDate()),style:  new TextStyle( shadows: textShadow, fontSize: 14)),
+                new TextSpan(text: 'Seš' , style: new TextStyle(fontWeight: FontWeight.bold,shadows: textShadow)),
+                new TextSpan(text: ' tady ',style:  new TextStyle( shadows: textShadow)),
               ],
             ),
           ),

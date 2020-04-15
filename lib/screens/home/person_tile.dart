@@ -12,7 +12,6 @@ class PersonTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-
     return Padding(
       padding: person.uid == user.uid?  EdgeInsets.fromLTRB(0, 8, 0, 30): EdgeInsets.fromLTRB(16, 0, 16, 10),
       child: Container(
