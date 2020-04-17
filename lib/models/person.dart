@@ -41,7 +41,7 @@ class Person {
         new LatLng(latitude,longitude),
         new LatLng(getPlaceDetails().latitude,getPlaceDetails().longitude)
     );
-     if(meters < 30)
+     if(meters < 80)
        return true;
      return false;
   }
