@@ -72,7 +72,7 @@ class _SignInState extends State<SignIn> {
 
                   if(result == null){
                    setState((){
-                     error = 'Uživatel s tímto emailem již existuje';
+                     error = 'Uživatel s těmito údaji neexistuje';
                       loading = false;
                     });
                    }
