@@ -56,7 +56,6 @@ class PersonTile extends StatelessWidget {
             title: Text(person.name, style: TextStyle(color: Colors.white,fontSize: 22, fontWeight: FontWeight.bold,  shadows:  textShadow),),
             subtitle: Text(' ${person.place} ', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold,shadows: textShadow )),
             trailing: person.place != 'Nikde'? person.naMiste()?
-
                   Icon(Icons.check_circle_outline, color: Colors.green):
                   Icon(Icons.do_not_disturb_alt, color: Colors.red)
             :null

@@ -108,7 +108,7 @@ class _MapsState extends State<Maps> {
 
   _showAlertDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
-      title: Text("Poloha úspěšně nasdílena"),
+      title: Center(child: Text("Poloha úspěšně nasdílena")),
     );
 
     showDialog(
@@ -118,6 +118,20 @@ class _MapsState extends State<Maps> {
       },
     );
   }
+
+  _noPositionDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      title: Center(child: Text("Nejdřív vyber polohu")),
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   Future<void>_saveDialog(BuildContext context, String uid){
     return showDialog(context: context, builder: (context){
        String _currentName;
@@ -237,13 +251,13 @@ class _MapsState extends State<Maps> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        newMarker? FloatingActionButton(
+                         FloatingActionButton(
                           heroTag: 'btn2',
-                          onPressed: () {_saveDialog(context, person.uid);},
+                          onPressed: () { newMarker? _saveDialog(context, person.uid): _noPositionDialog(context); },
                           tooltip: 'Status change',
                           child: const Icon(Icons.save ),
                           backgroundColor: Colors.amber[400],
-                        ):Container(),
+                        ),
                         SizedBox(height: 16.0),
                          FloatingActionButton(
                            heroTag: 'btn1',
