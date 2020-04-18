@@ -60,7 +60,7 @@ class _MapsState extends State<Maps> {
     _markers["Current Location"] = Marker(
       markerId: MarkerId("curr_loc"),
       position: position,
-      infoWindow: InfoWindow(title: DateFormat('kk:mm - MM/dd').format(person.update.toDate())),
+      infoWindow:  InfoWindow(title: person.uid == userUid? "Tvoje poloha": DateFormat('kk:mm - MM/dd').format(person.update.toDate())),
       icon:
       BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
     );
