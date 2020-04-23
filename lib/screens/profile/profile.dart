@@ -113,85 +113,87 @@ class _ProfileState extends State<Profile> {
                     ),
                   ),
                 ),
-                body: Container(
-                  padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(350),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Color(0xFF000000).withAlpha(60),
-                                  blurRadius: 8.0,
-                                  spreadRadius: -8.0,
-                                  offset: Offset(
-                                    0.0,
-                                    23.0,
+                body: SingleChildScrollView(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(350),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0xFF000000).withAlpha(60),
+                                    blurRadius: 8.0,
+                                    spreadRadius: -8.0,
+                                    offset: Offset(
+                                      0.0,
+                                      23.0,
+                                    ),
                                   ),
-                                ),
-                              ]),
-                          child: imageFile == null? CircleAvatar(
-                            radius: 75,
-                            backgroundImage: (userData.picUrl != '0')?NetworkImage("https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/${userData.picUrl}?alt=media"):
-                            NetworkImage('https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/wojak.png?alt=media'),
-                          ): CircleAvatar(
-                            radius: 75,
-                            backgroundImage: new FileImage(imageFile),
-                          )
-                        ),
-
-                        SizedBox(height: 20.0),
-                        TextFormField(
-                          initialValue: userData.name,
-                          decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
-                          validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
-                          onChanged: (val) => setState(() => _currentName = val),
-                        ),
-
-                        SizedBox(height: 20.0),
-                        RaisedButton(
-                          color: Colors.pink[400],
-                          child: Text(
-                            'Update',
-                            style: TextStyle(color: Colors.white),
+                                ]),
+                            child: imageFile == null? CircleAvatar(
+                              radius: 75,
+                              backgroundImage: (userData.picUrl != '0')?NetworkImage("https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/${userData.picUrl}?alt=media"):
+                              NetworkImage('https://firebasestorage.googleapis.com/v0/b/myfirstporject-e7175.appspot.com/o/wojak.png?alt=media'),
+                            ): CircleAvatar(
+                              radius: 75,
+                              backgroundImage: new FileImage(imageFile),
+                            )
                           ),
-                          onPressed: () async {
-                            DataBaseService database = DataBaseService(uid: user.uid);
-                            setState(() {
-                              loading = true;
-                            });
-                            if(_formKey.currentState.validate()) {
-                              await database.updateUserName(
-                                _currentName ?? userData.name,
-                              );
-                            }
-                            if(imageFile != null){
-                              String stamp = new DateTime.now().millisecondsSinceEpoch.toString();
-                              if(userData.picUrl != '0'){
-                                await database.deletePic(userData.picUrl);
+
+                          SizedBox(height: 20.0),
+                          TextFormField(
+                            initialValue: userData.name,
+                            decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
+                            validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
+                            onChanged: (val) => setState(() => _currentName = val),
+                          ),
+
+                          SizedBox(height: 20.0),
+                          RaisedButton(
+                            color: Colors.pink[400],
+                            child: Text(
+                              'Update',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            onPressed: () async {
+                              DataBaseService database = DataBaseService(uid: user.uid);
+                              setState(() {
+                                loading = true;
+                              });
+                              if(_formKey.currentState.validate()) {
+                                await database.updateUserName(
+                                  _currentName ?? userData.name,
+                                );
                               }
+                              if(imageFile != null){
+                                String stamp = new DateTime.now().millisecondsSinceEpoch.toString();
+                                if(userData.picUrl != '0'){
+                                  await database.deletePic(userData.picUrl);
+                                }
 
-                              await database.uploadPic(context, user.uid + stamp, imageFile);
-                              await database.updateProfilePic(
-                                  user.uid + stamp
-                              );
-                            }
-                            setState(() {
-                              loading = false;
-                            });
-                            Navigator.pop(context);
-                          },
+                                await database.uploadPic(context, user.uid + stamp, imageFile);
+                                await database.updateProfilePic(
+                                    user.uid + stamp
+                                );
+                              }
+                              setState(() {
+                                loading = false;
+                              });
+                              Navigator.pop(context);
+                            },
 
-                        ),
-                        SizedBox(height: 12.0),
-                        Text(
-                            error,
-                            style: TextStyle(color: Colors.red, fontSize: 14.0)
-                        )
-                      ],
+                          ),
+                          SizedBox(height: 12.0),
+                          Text(
+                              error,
+                              style: TextStyle(color: Colors.red, fontSize: 14.0)
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),

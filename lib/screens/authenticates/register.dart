@@ -40,63 +40,65 @@ class _RegisterState extends State<Register> {
             )
           ],
         ),
-        body: Container(
-          padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
-                  validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
-                  onChanged: (val){
-                    setState(() => nick = val);
-                  },
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                  validator: (val) => val.isEmpty ? 'Zadej email' : null,
-                  onChanged: (val){
-                    setState(() => email = val);
-                  },
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  decoration: textInputDecoration.copyWith(hintText: 'Heslo'),
-                  obscureText: true,
-                  validator: (val) => val.length < 6 ? 'Heslo musí být alespoň 6 znaků dlouhé' : null,
-                  onChanged: (val){
-                    setState(() => password = val);
-                  },
-                ),
-                SizedBox(height: 20.0),
-                RaisedButton(
-                  color: Colors.pink[400],
-                  child: Text(
-                      'Registrovat',
-                      style: TextStyle(color: Colors.white)
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Jméno'),
+                    validator: (val) => val.length < 4 ? 'Jméno musí být alespoň 4 znaky dlouhé' : null,
+                    onChanged: (val){
+                      setState(() => nick = val);
+                    },
                   ),
-                  onPressed: () async{
-                  if(_formKey.currentState.validate()){
-                    setState(() => loading = true);
-                    dynamic result = await _auth.registerWithEmailAndPasword(email, password, nick);
-                    if(result == null){
-                      setState((){
-                        error = 'Uživatel se zadanými údaji neexistuje';
-                        loading = false;
-                      });
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                    validator: (val) => val.isEmpty ? 'Zadej email' : null,
+                    onChanged: (val){
+                      setState(() => email = val);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  TextFormField(
+                    decoration: textInputDecoration.copyWith(hintText: 'Heslo'),
+                    obscureText: true,
+                    validator: (val) => val.length < 6 ? 'Heslo musí být alespoň 6 znaků dlouhé' : null,
+                    onChanged: (val){
+                      setState(() => password = val);
+                    },
+                  ),
+                  SizedBox(height: 20.0),
+                  RaisedButton(
+                    color: Colors.pink[400],
+                    child: Text(
+                        'Registrovat',
+                        style: TextStyle(color: Colors.white)
+                    ),
+                    onPressed: () async{
+                    if(_formKey.currentState.validate()){
+                      setState(() => loading = true);
+                      dynamic result = await _auth.registerWithEmailAndPasword(email, password, nick);
+                      if(result == null){
+                        setState((){
+                          error = 'Uživatel se zadanými údaji neexistuje';
+                          loading = false;
+                        });
+                      }
                     }
-                  }
-                  },
-                ),
-                SizedBox(height: 12.0),
-                Text(
-                  error,
-                  style: TextStyle(color: Colors.red, fontSize: 14.0)
-                )
-              ],
+                    },
+                  ),
+                  SizedBox(height: 12.0),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.red, fontSize: 14.0)
+                  )
+                ],
+              ),
             ),
           ),
         )
